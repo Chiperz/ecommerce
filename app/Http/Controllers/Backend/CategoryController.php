@@ -76,7 +76,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'icon' => 'required | not_in:empty',
-            'name' => 'required | max:200 | unique:categories,name',
+            'name' => 'required | max:200 | unique:categories,name,'.$id,
             'status' => 'required'
         ]);
 
@@ -98,6 +98,23 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Deleted Successfully!'
+        ]);
+    }
+
+    public function changeStatus(Request $request){
+        $category = Category::findOrFail($request->id);
+        $category->status = $request->status == "true" ? 1 : 0;
+        $category->save();
+        
+        return response([
+            'status' => 'success',
+            'message' => 'Status Has Been Updated!'
+        ]);
     }
 }

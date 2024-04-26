@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoryDataTable extends DataTable
+class SubCategoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,14 +23,14 @@ class CategoryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query){
-                $detailBtn = "<a href='".route('admin.category.show', $query->id)."' class='btn btn-info'><i class='fa fa-info'></i></a>";
-                $editBtn = "<a href='".route('admin.category.edit', $query->id)."' class='btn btn-warning ml-2'><i class='fa fa-edit'></i></a>";
-                $deleteBtn = "<a href='".route('admin.category.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='fa fa-trash'></i></a>";
+                $detailBtn = "<a href='".route('admin.sub-category.show', $query->id)."' class='btn btn-info'><i class='fa fa-info'></i></a>";
+                $editBtn = "<a href='".route('admin.sub-category.edit', $query->id)."' class='btn btn-warning ml-2'><i class='fa fa-edit'></i></a>";
+                $deleteBtn = "<a href='".route('admin.sub-category.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='fa fa-trash'></i></a>";
 
                 return $detailBtn.$editBtn.$deleteBtn;
             })
-            ->addColumn('icon', function($query){
-                return '<i style="font-size:40px" class="'.$query->icon.'"></i>';
+            ->addColumn('category', function($query){
+                return $query->category->name;
             })
             ->addColumn('status', function($query){
                 if($query->status == 1){
@@ -46,14 +46,14 @@ class CategoryDataTable extends DataTable
                 }
                 return $button;
             })
-            ->rawColumns(['icon', 'action', 'status'])
+            ->rawColumns(['status','action'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Category $model): QueryBuilder
+    public function query(SubCategory $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -64,7 +64,7 @@ class CategoryDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('category-table')
+                    ->setTableId('subcategory-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -86,13 +86,11 @@ class CategoryDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')
-                ->width(100),
-            Column::make('icon')
-                ->width(300),
+            Column::make('id'),
             Column::make('name'),
-            Column::make('status')
-                ->width(200),
+            Column::make('slug'),
+            Column::make('category'),
+            Column::make('status'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
@@ -106,6 +104,6 @@ class CategoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Category_' . date('YmdHis');
+        return 'SubCategory_' . date('YmdHis');
     }
 }
