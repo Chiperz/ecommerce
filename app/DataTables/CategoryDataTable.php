@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Slider;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SliderDataTable extends DataTable
+class CategoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,29 +23,30 @@ class SliderDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query){
-                $detailBtn = "<a href='".route('admin.slider.show', $query->id)."' class='btn btn-info'><i class='fa fa-info'></i></a>";
-                $editBtn = "<a href='".route('admin.slider.edit', $query->id)."' class='btn btn-warning ml-2'><i class='fa fa-edit'></i></a>";
-                $deleteBtn = "<a href='".route('admin.slider.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='fa fa-trash'></i></a>";
+                $detailBtn = "<a href='".route('admin.category.show', $query->id)."' class='btn btn-info'><i class='fa fa-info'></i></a>";
+                $editBtn = "<a href='".route('admin.category.edit', $query->id)."' class='btn btn-warning ml-2'><i class='fa fa-edit'></i></a>";
+                $deleteBtn = "<a href='".route('admin.category.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='fa fa-trash'></i></a>";
 
                 return $detailBtn.$editBtn.$deleteBtn;
             })
-            ->addColumn('banner', function($query){
-                return "<img src='".asset($query->banner)."' width='200px'></img>";
+            ->addColumn('icon', function($query){
+                return '<i style="font-size:40px" class="'.$query->icon.'"></i>';
             })
             ->addColumn('status', function($query){
-                $active = "<i class='badge badge-success'>Active</i>";
-                $inactive = "<i class='badge badge-danger'>Inactive</i>";
-
-                return $query->status == 1 ? $active : $inactive;
+                return'<label class="custom-switch mt-2">
+                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                            <span class="custom-switch-indicator"></span>
+                            
+                            </label>';
             })
-            ->rawColumns(['banner', 'status','action'])
+            ->rawColumns(['icon', 'action', 'status'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Slider $model): QueryBuilder
+    public function query(Category $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -56,11 +57,11 @@ class SliderDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('slider-table')
+                    ->setTableId('category-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(1)
+                    ->orderBy(0)
                     ->selectStyleSingle()
                     ->buttons([
                         Button::make('excel'),
@@ -80,11 +81,11 @@ class SliderDataTable extends DataTable
         return [
             Column::make('id')
                 ->width(100),
-            Column::make('banner')
+            Column::make('icon')
+                ->width(300),
+            Column::make('name'),
+            Column::make('status')
                 ->width(200),
-            Column::make('title'),
-            Column::make('serial'),
-            Column::make('status'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
@@ -98,6 +99,6 @@ class SliderDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Slider_' . date('YmdHis');
+        return 'Category_' . date('YmdHis');
     }
 }
