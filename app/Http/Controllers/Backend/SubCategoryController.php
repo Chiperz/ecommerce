@@ -110,6 +110,7 @@ class SubCategoryController extends Controller
         ]);
     }
 
+    // CHANGE STATUS
     public function changeStatus(Request $request){
         $subCategory = SubCategory::findOrFail($request->id);
         $subCategory->status = $request->status == 'true' ? 1 : 0;

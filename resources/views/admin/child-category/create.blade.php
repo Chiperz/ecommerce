@@ -30,7 +30,7 @@
 
                     <div class="form-group">
                       <label for="inputState">Sub Category</label>
-                      <select id="inputState" class="form-control sub-category" name="sub-category">
+                      <select id="inputState" class="form-control sub-category" name="sub_category">
                         <option>--Select Sub Category--</option>
 
                       </select>
@@ -73,7 +73,7 @@
           success: function(data){
             $('.sub-category').html('<option>--Select Sub Category--</option>');
             $.each(data, function(i, item){
-              $('.sub-category').append(`<option values="${item.id}">${item.name}</option>`);
+              $('.sub-category').append(`<option value='${item.id}'>${item.name}</option>`);
             })
           },
           error: function(xhr, status, error){
