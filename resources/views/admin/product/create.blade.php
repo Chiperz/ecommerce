@@ -118,39 +118,15 @@
                       <textarea name="long_description" class="summernote">{{ old('long_description') }}</textarea>
                     </div>
 
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="inputState">Is Top</label>
-                          <select id="inputState" class="form-control" name="is_top">
-                            <option value="">-- Select Is Top --</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="inputState">Is Best</label>
-                          <select id="inputState" class="form-control" name="is_best">
-                            <option value="">-- Select Is Best --</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="inputState">Is Featured</label>
-                          <select id="inputState" class="form-control" name="is_featured">
-                            <option value="">-- Select Is Featured --</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                          </select>
-                        </div>
-                      </div>
+                    <div class="form-group">
+                      <label for="inputState">Product Type</label>
+                      <select id="inputState" class="form-control" name="product_type">
+                        <option value="0">-- Select Product Type --</option>
+                        <option value="new_arrival">New Arrival</option>
+                        <option value="featured">Featured</option>
+                        <option value="top_product">Top Product</option>
+                        <option value="best_product">Best Product</option>
+                      </select>
                     </div>
 
                     <div class="form-group">
@@ -186,6 +162,7 @@
     // GET SUB CATEGORIES
     $(document).ready(function(){
       $('body').on('change', '.main-category', function(e){
+        $('.child-category').html('<option>-- Select Sub Category --</option>');
         let id = $(this).val();
         $.ajax({
           method: 'GET',
