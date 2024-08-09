@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('product_variant_items', function (Blueprint $table) {
             $table->id();
+            $table->integer('product_variant_id')->nullable();
+            $table->string('name')->nullable();
+            $table->double('price')->nullable();
+            $table->boolean('is_default')->default(0);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
