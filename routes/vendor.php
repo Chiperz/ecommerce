@@ -2,8 +2,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\VendorController;
 use App\Http\Controllers\Backend\VendorProfileController;
+use App\Http\Controllers\Backend\VendorShopProfileContoller;
 
 // VENDOR ROUTE
+
+Route::resource('shop-profile', VendorShopProfileContoller::class);
+
 Route::get('dashboard', [VendorController::class, 'dashboard'])->name('dashboard');
 Route::get('profile', [VendorProfileController::class, 'index'])->name('profile');
 Route::put('profile', [VendorProfileController::class, 'updateProfile'])->name('profile.update');

@@ -7,6 +7,9 @@ use App\Models\SubCategory;
 use App\Models\ChildCategory;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\ProductVariant;
+use App\Models\ProductImageGallery;
+
 
 use App\Traits\ImageUploadTrait;
 
@@ -172,7 +175,27 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        // Main Image
+        $this->deleteImage($product->thumb_image);
+
+        // Gallery Image
+        $galleryImages = ProductImageGallery::where('product_id', $product->id)->get();
+        foreach($galleryImages as $image){
+            $this->deleteImage($image->image);
+            $image->delete();
+        }
+
+        // Variant Product
+        $variants = ProductVariant::where('product_id', $product->id)->get();
+        foreach($variants as $variant){
+            $variant->productVariantItem()->delete();
+            $variant->delete();
+        }
+        
+        $product->delete();
+
+        return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
     }
 
     // GET ALL SUB CATEGORY
@@ -185,5 +208,16 @@ class ProductController extends Controller
     public function getChildCategories(Request $request){
         $childCategories = ChildCategory::where('sub_category_id', $request->id)->get();
         return $childCategories;
+    }
+
+    public function changeStatus(Request $request){
+        $variant = Product::findOrFail($request->id);
+        $variant->status = $request->status == "true" ? 1 : 0;
+        $variant->save();
+        
+        return response([
+            'status' => 'success',
+            'message' => 'Status Has Been Updated!'
+        ]);
     }
 }

@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="{{ asset('frontend/css/jquery.classycountdown.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend/css/venobox.min.css') }}">
 
+  <link rel="stylesheet" href="{{asset('backend/assets/modules/summernote/summernote-bs4.css')}}">
+
   <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -95,6 +97,9 @@
   <script src="{{ asset('frontend/js/venobox.min.js') }}"></script>
   <!--classycountdown js-->
   <script src="{{ asset('frontend/js/jquery.classycountdown.js') }}"></script>
+
+  {{-- SUMMER NOTE --}}
+  <script src="{{ asset('backend/assets/modules/summernote/summernote-bs4.js') }}"></script>
 
   <!--main/custom js-->
   <script src="{{ asset('frontend/js/main.js') }}"></script>
