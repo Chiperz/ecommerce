@@ -27,7 +27,10 @@
   <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css">
+  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> --}}
   <!-- <link rel="stylesheet" href="css/rtl.css"> -->
+  <link rel="stylesheet" href="{{asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.css')}}">
 </head>
 
 <body>
@@ -105,6 +108,20 @@
   <script src="{{ asset('frontend/js/main.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+  {{-- <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script> --}}
+  <script src="{{ asset('backend/assets/modules/moment.min.js') }}"></script>
+  <script src="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
+  <script>
+    $('.datepicker').daterangepicker({
+      locale: {
+        format: 'YYYY-MM-DD'
+      },
+      singleDatePicker: true
+    });
+  </script>
+
   <script>
     @if ($errors->any())
       @foreach ($errors->all() as $error)
@@ -112,6 +129,9 @@
       @endforeach
     @endif
   </script>
+
+  @stack('scripts')
+
 </body>
 
 </html>
