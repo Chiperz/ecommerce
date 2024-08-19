@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -26,15 +27,15 @@ class VendorProductDataTable extends DataTable
                 $detailBtn = "<a href='".route('vendor.product.show', $query->id)."' class='btn btn-info'><i class='fa fa-info'></i></a>";
                 $editBtn = "<a href='".route('vendor.product.edit', $query->id)."' class='btn btn-warning' style='margin-left:4px;'><i class='fa fa-edit'></i></a>";
                 $deleteBtn = "<a href='".route('vendor.product.destroy', $query->id)."' class='btn btn-danger delete-item' style='margin-left:4px;'><i class='fa fa-trash'></i></a>";
-                $moreBtn = '<div class="dropdown dropleft d-inline">
-                    <button class="btn btn-primary dropdown-toggle ml-1" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-cog"></i>
-                    </button>
-                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
-                        <a class="dropdown-item has-icon" href="'.route('admin.product-image-gallery.index', ['product' => $query->id]).'"><i class="far fa-heart"></i> Image Gallery</a>
-                        <a class="dropdown-item has-icon" href="'.route('admin.product-variant.index', ['product' => $query->id]).'"><i class="far fa-file"></i> Variants</a>
-                    </div>
-                    </div>';
+                $moreBtn = '<div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left:2px;">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                <li><a class="dropdown-item has-icon" href="'.route('vendor.product-image-gallery.index', ['product' => $query->id]).'"><i class="far fa-heart"></i> Image Gallery</a></li>
+                                <li><a class="dropdown-item has-icon" href="'.route('admin.product-variant.index', ['product' => $query->id]).'"><i class="far fa-file"></i> Variants</a></li>
+                            </ul>
+                            </div>';
 
                 return $detailBtn.$editBtn.$deleteBtn.$moreBtn;
             })
@@ -85,7 +86,9 @@ class VendorProductDataTable extends DataTable
      */
     public function query(Product $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model
+            ->where('vendor_id', Auth::user()->vendor->id)
+            ->newQuery();
     }
 
     /**

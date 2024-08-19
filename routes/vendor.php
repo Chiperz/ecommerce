@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\VendorController;
 use App\Http\Controllers\Backend\VendorProfileController;
 use App\Http\Controllers\Backend\VendorShopProfileContoller;
 use App\Http\Controllers\Backend\VendorProductController;
+use App\Http\Controllers\Backend\VendorProductImageGalleryController;
 
 // VENDOR ROUTE
 
@@ -18,3 +19,6 @@ Route::put('profile/password', [VendorProfileController::class, 'updatePassword'
 Route::get('product/get-subcategories', [VendorProductController::class, 'getSubCategories'])->name('product.get-subcategories');
 Route::get('product/get-childcategories', [VendorProductController::class, 'getChildCategories'])->name('product.get-childcategories');
 Route::resource('product', VendorProductController::class);
+
+// Product Image Gallery
+Route::resource('product-image-gallery', VendorProductImageGalleryController::class);
